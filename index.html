@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Movies</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    header {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    h1 {
+        margin: 0;
+    }
+    
+    #movie-list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .movie-card {
+        width: 300px;
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    .movie-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+    
+    .movie-card h2 {
+        margin-top: 10px;
+        font-size: 18px;
+    }
+    
+    .movie-card p {
+        margin-top: 5px;
+        font-size: 14px;
+        color: #555;
+    }
+    
+</style>
+<body>
+    <header>
+        <h1>Trending Movies</h1>
+    </header>
+    <main id="movie-list">
+        <!-- Movies will be dynamically added here -->
+        <li>Dune</li>
+        <li>Damsel</li>
+        <li>poor thing</li>
+        <li>kung fu panda 4</li>
+        <li>love lies bleeding</li>
+    </main>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const apiKey = 'YOUR_API_KEY'; // Replace with your API key
+            const url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${apiKey}`;
+        
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const movies = data.results;
+                    const movieList = document.getElementById('movie-list');
+        
+                    movies.forEach(movie => {
+                        const movieCard = document.createElement('div');
+                        movieCard.classList.add('movie-card');
+        
+                        const imageUrl = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`;
+                        const image = document.createElement('img');
+                        image.src = imageUrl;
+                        image.alt = movie.title;
+        
+                        const title = document.createElement('h2');
+                        title.textContent = movie.title;
+        
+                        const overview = document.createElement('p');
+                        overview.textContent = movie.overview;
+        
+                        movieCard.appendChild(image);
+                        movieCard.appendChild(title);
+                        movieCard.appendChild(overview);
+        
+                        movieList.appendChild(movieCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        });
+        
+    </script>
+</body>
+</html>
